@@ -1,25 +1,124 @@
-The main aim of this project is to display the engine temperature along with 
-alert message, reverse alert and control the indicators using CAN protocol.
+# Vehicle control system using CAN Protocol
 
-There are three Nodes in the project each node communicate with out node through CAN.
+## 📌 Project Objective
 
-MAIN NODE: In continuous loop, Read the temperature information and display it on LCD. 
-And set the limit for engine temperature in the application program. If current temperature is 
-beyond the limit value, then give the indication by using one LED/LED’S. And based on the 
-interrupt generated, need to send the indicator signal to the indicator node. And one more 
-task of this main node is receiving the reverse alert node information and give the indication 
-(LED/BUZZER ON/OFF) based on the value received by reverse alert node.
+The main aim of this project is to:
 
+* Display engine temperature
+* Generate alert messages when temperature exceeds limits
+* Provide reverse obstacle alerts
+* Control vehicle indicators
+  using the **CAN (Controller Area Network) protocol**
 
-INDICATOR NODE: Continuously waiting for the data from the main NODE using CAN.  
-If any data is received from main NODE, based on that it is controlling the indicator signals 
-connected to microcontroller. Refer the block diagram for how to give the indicator signals 
-with the help of LED’S. 
+---
 
+## 🧩 System Overview
 
+The system consists of **three nodes** that communicate with each other via CAN:
 
-REVERSE NODE: Continuously reading the GP2D12 sensor information with the 
-help of on chip ADC and set one limit value to the sensor reading. If the sensor value is 
-below the limit value sends logic 1 to the main node using CAN protocol. Or if the sensor 
-value is greater than the limit value then sends the logic 0 to the main node using CAN 
-protocol.
+1. **Main Node**
+2. **Indicator Node**
+3. **Reverse Alert Node**
+
+Each node performs a specific task and exchanges data over the CAN bus.
+
+---
+
+## 🔗 Node Architecture
+
+### 🔹 1. Main Node
+
+**Responsibilities:**
+
+* Continuously read engine temperature
+* Display temperature on LCD
+* Set a predefined temperature threshold
+* Compare real-time temperature with the threshold
+
+**Actions:**
+
+* If temperature exceeds limit:
+
+  * Turn ON LED(s) as an alert
+* Handle interrupt signals
+* Send indicator control signals to Indicator Node via CAN
+* Receive reverse alert data from Reverse Node
+* Control LED/Buzzer based on reverse alert status
+
+---
+
+### 🔹 2. Indicator Node
+
+**Responsibilities:**
+
+* Continuously listen for CAN messages from Main Node
+
+**Actions:**
+
+* On receiving data:
+
+  * Control indicator LEDs connected to the microcontroller
+  * Perform actions based on received signal (e.g., turn ON/OFF indicators)
+
+---
+
+### 🔹 3. Reverse Alert Node
+
+**Responsibilities:**
+
+* Continuously read distance using **GP2D12 sensor**
+* Use on-chip ADC for sensor data acquisition
+
+**Actions:**
+
+* Set a threshold distance value
+* If object is **closer than limit**:
+
+  * Send logic `1` to Main Node via CAN
+* If object is **farther than limit**:
+
+  * Send logic `0` to Main Node via CAN
+
+---
+
+## 🔄 Communication Flow
+
+```text
+[Reverse Node] ---> (CAN) ---> [Main Node] ---> (CAN) ---> [Indicator Node]
+                         |
+                         v
+                   LCD Display + LED/Buzzer
+```
+
+---
+
+## ⚙️ Key Features
+
+* Real-time engine temperature monitoring
+* Over-temperature alert system
+* Reverse obstacle detection
+* Distributed communication using CAN protocol
+* Interrupt-based signal handling
+* Modular node-based architecture
+
+---
+
+## 🛠️ Technologies Used
+
+* Embedded C
+* Microcontrollers (e.g., ARM / PIC / AVR / STM32)
+* CAN Protocol
+* ADC (Analog to Digital Converter)
+* GP2D12 Distance Sensor
+* LCD Display
+* LEDs & Buzzer
+
+---
+
+## 📊 Advantages
+
+* Reliable communication using CAN
+* Scalable multi-node architecture
+* Real-time monitoring and alerts
+* Efficient fault detection system
+
